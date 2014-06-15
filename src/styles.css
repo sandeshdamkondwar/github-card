@@ -11,7 +11,7 @@
 }
 
 body {
-  font: 100%/1.4em "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font: 100%/1.4em "Open Sans", "Helvetica", "Arial", sans-serif;
   margin: 0 auto;
   text-align: center;
   color: #444;
@@ -29,7 +29,7 @@ h1 {
 }
 
 h2 {
-  font: 1.2em Georgia, "Times New Roman", Palatino, serif;
+  font: 1.2em "Droid Serif", Georgia, "Times New Roman", Palatino, serif;
 }
 
 output {
@@ -43,25 +43,31 @@ figure {
   margin: 0;
 }
 
+input, button {
+  padding: 10px 12px;
+  line-height: 1.5em;
+}
+
+input:focus,
+button:focus {
+    outline: 0;
+}
+
 input {
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-weight: 300;
   color: #222;
   font-size: 18pt;
   width: 300px;
-  padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #CCC;
   vertical-align: middle;
 }
 
 button {
-  padding: 13px 10px 12px;
   border-radius: 6px;
   background-color: #fff;
   text-align: center;
   font-size: 18pt;
-  line-height: 1em;
   background-color: #f5f5f5;
   cursor: pointer;
   border: 1px solid #CCC;

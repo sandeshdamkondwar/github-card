@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>&lt;github-card&gt;: A web component to show a profile-card for your Github account.</title>
@@ -12,6 +13,7 @@
 
     <header>
       <h1>&lt;github-card&gt;</h1>
+      <br>
       <h2>A web component to show a profile-card for your Github account.</h2>
     </header>
     <output id="cards">
@@ -57,53 +59,40 @@
     <template id="github-template">
       <style>
         .user {
-          font-family: "Helvetica", Arial, sans-serif;
+          font-family: "Open Sans", Arial, sans-serif;
           display: inline-block;
           width: 265px;
-          height: 300px;
+          min-height: 100px;
           overflow: hidden;
           border: 1px solid #D5D5D5;
           border-radius: 6px;
           position: relative;
-          background-color: #2E353C;
+          background-color: #616161;
           text-align: center;
           color: #fff;
           font-weight: 100;
-          transition: background 1000ms ease-out;
+          transition: all .1s ease-out;
         }
 
-        .user dl,
-        .user dd {
-          margin: 0;
-        }
-
-        .user dt {
-          display: none;
-        }
-
-        .user-data {
-          background: #fff url('webcomponent/github.png') no-repeat 5px 5px;
-          background-size: 25px;
-          height: 85px;
-        }
-
-        dd.user-avatar {
-          display: inline-block;
-          margin: 20px 0 10px;
+        .user-avatar {
+          display: block;
+          text-align: center;
+          padding: 10px;
         }
 
         .user-avatar img {
           border-radius: 100%;
           height: 120px;
           width: 120px;
-          border: 3px solid #fff;
+          border: 5px solid #fff;
           vertical-align: middle;
           background-color: #fff;
         }
 
-        dd.user-name,
-        dd.user-account {
+        .user-name,
+        .user-account {
           margin: 5px 0;
+          padding: 0 1em;
         }
 
         .user-name {
@@ -116,34 +105,22 @@
           margin: 5px 0;
         }
 
-        .user-stats {
-          border-top: 1px groove #999;
-          position: relative;
-          top: 155px;
-        }
-
-        .user-stats dd {
-          padding: 10px 20px;
-        }
-
-        .user-repos,
-        .user-following,
-        .user-followers {
+        .user-repos-wrapper,
+        .user-followers-wrapper {
           display: inline-block;
-          font-size: 22px;
-          color: #999;
+          width: 50%;
+          float: left;
+          padding: 1em;
+          background: #F2F2F2;
+          box-sizing: border-box;
+          font-size: 1.2em;
+          font-weight: 600;
+          color: #6D6E76;
         }
 
-        .user-repos:after,
-        .user-following:after,
-        .user-followers:after {
-          content: attr(data-stats);
-          text-transform: uppercase;
-          display: block;
-          font-size: 11px;
-          color: #666;
-          font-weight: normal;
-          line-height: 1.7em;
+        .user-repos-wrapper .heading,
+        .user-followers-wrapper .heading {
+          margin: 0;
         }
 
         .spinner {
@@ -152,25 +129,23 @@
       </style>
 
       <article class="user spinner">
-        <dl class="user-data" hidden>
-          <dt>Avatar:</dt>
-          <dd class="user-avatar">
+        <div class="user-image" hidden>
+          <div class="user-avatar">
             <img src="">
-          </dd>
-
-          <dt>Fullname:</dt>
-          <dd class="user-name"></dd>
-
-          <dt>Account:</dt>
-          <dd class="user-account"></dd>
-        </dl>
-        <dl class="user-stats" hidden>
-          <dt>Repos</dt>
-          <dd class="user-repos" data-stats="repos"></dd>
-
-          <dt>Followers</dt>
-          <dd class="user-followers" data-stats="followers"></dd>
-        </dl>
+          </div>
+        </div>
+        <h4 class="user-name"></h4>
+        <h5 class="user-account"></h5>
+        <div class="user-stats" hidden>
+          <div class="user-repos-wrapper">
+            <h5 class="heading">Repos</h5>
+            <span class="user-repos" data-stats="repos"></span>
+          </div>
+          <div class="user-followers-wrapper">
+            <h5 class="heading">Followers</h5>
+            <span class="user-followers" data-stats="followers"></span>
+          </div>
+        </div>
       <article>
     </template>
 
@@ -186,10 +161,10 @@
         xhr.open('GET', url + this.getAttribute('user'));
         xhr.onreadystatechange = function () {
           if (xhr.readyState === xhr.DONE) {
-            status = xhr.status;
+            var status = xhr.status;
 
             if ((status >= 200 && status < 300) || status === 304 || status === 0) {
-              response = JSON.parse(xhr.response || xhr.responseText);
+              var response = JSON.parse(xhr.response || xhr.responseText);
               that.fillUser(response);
             }
           }
@@ -204,12 +179,12 @@
         usr.querySelector('.user-account').textContent = this.getAttribute('user');
 
         usr.querySelector('.user-name').textContent = user.name;
-        usr.querySelector('.user-avatar img').src = user.avatar_url;
+        usr.querySelector('.user-image img').src = user.avatar_url;
         usr.querySelector('.user-repos').textContent = user.public_repos;
         usr.querySelector('.user-followers').textContent = user.followers;
 
         usr.querySelector('.user').classList.remove('spinner');
-        usr.querySelector('.user-data').removeAttribute('hidden');
+        usr.querySelector('.user-image').removeAttribute('hidden');
         usr.querySelector('.user-stats').removeAttribute('hidden');
       };
 
